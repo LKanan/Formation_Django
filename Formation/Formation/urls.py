@@ -16,7 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from products import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
+    # Le "" vide signifie que c'est le lien à la racine juste après http://127.0.0.1:8000/ on dirait que c'est le
+    # dernier /
+    path("", views.home_view, name="home")
 ]
