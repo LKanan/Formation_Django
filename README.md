@@ -211,4 +211,20 @@ L'application centrale qui porte meme le nom du projet a un fichier **urls.py**,
 *liens*) de notre site ou projet. chaque *View(Controler)* est caractérisé par un lien qui mène à elle, et c'est grace à
 ce lien qu'on peut acceder à un *controler* qui est lui meme dejà associé à une vue(template).
 
+## 6. Interaction avec la base de donnés par le terminal(Shell)
 
+- Pour lancer le shell interactif on tape la commande `python manage.py shell`
+- Pour fermet cette console interactive on tape la combinaison **Ctrl+D**
+- Pour interagir avec une table de notre BDD on doit importer la classe de cette table dans le shell en faisant un: 
+`from nom_application.models import NomClasse`
+- **Création d'un nouvel objet(enregistrement)**  
+une fois importé la classe importée on crée un enregistrement en créant evidement un objet et en completants les valeurs 
+des attributs  
+```
+new = NomClasse.objects.create(attrib1= valeur1, attrib2= valeur2, attrib3= valeur3)
+new.save()
+```
+On peut visualiser à quoi correspond l'objet new dans le terminal en tapant juste `new` puis la touche **Enter** cela 
+nous affichera le nom de l'objet, celui defini par la surcharge de la methode `__str__`.  
+On peut aussi visualiser le contenu des différents attributs d'un objet en faisant par exemple `new.attrib1`, cela 
+affichera le contenu de *attrib1* pour cet objet. 
