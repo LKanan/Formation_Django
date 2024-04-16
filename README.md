@@ -164,13 +164,15 @@ class Custom_model(models.Model):
 
 Par défaut les noms de nos objets dans les tables est sous format *nom_Classe(ID)* de l'objet, pour personnaliser ce non
 on doit surcharger methode __str__  dans les differentes classes, cette methode nour renvoi la cahine de caractère qui
-va représenter le nom de chaque objet de la classe, par exemple pour faire à ce que chaque objet ou enregistrement de 
+va représenter le nom de chaque objet de la classe, par exemple pour faire à ce que chaque objet ou enregistrement de
 la table soit reconnu par son nom, on fait:
+
 ```
 def __str__(self):
     return self.name
 ```
-Il faut savoir qu'on peut prendre n'importe quel attribut ou meme la concateation de ses attributs pour designer le nom 
+
+Il faut savoir qu'on peut prendre n'importe quel attribut ou meme la concateation de ses attributs pour designer le nom
 de l'objet.
 
 Les *champs* d'un model représentent les colonnes de la table et ces champs doivent prendre des types, concernant les
@@ -184,16 +186,19 @@ fichiers **admin.py** de notre application
 
 - Le fichier **admin.py** permet de gerer la visualisation de nos tables et leurs champs dans l'interface d'
   administration.
-Pour afficher le contenu de la base de données d'une facon minimale ce qui affichera seulement le nom des objets, 
-on peut faire:
+  Pour afficher le contenu de la base de données d'une facon minimale ce qui affichera seulement le nom des objets,
+  on peut faire:
+
 ```
 from django.contrib import admin
 from .models import Custom_name_class
 
 admin.site.register(Custom_name_class)
 ```
-Mais pour afficher le contenu de la base de données sous forme d'une table en Lignes X Colones on doit augmenter les 
+
+Mais pour afficher le contenu de la base de données sous forme d'une table en Lignes X Colones on doit augmenter les
 attributs à afficher de cette facon:
+
 ```
 from django.contrib import admin
 from .models import Custom_name_class
@@ -215,16 +220,50 @@ ce lien qu'on peut acceder à un *controler* qui est lui meme dejà associé à 
 
 - Pour lancer le shell interactif on tape la commande `python manage.py shell`
 - Pour fermet cette console interactive on tape la combinaison **Ctrl+D**
-- Pour interagir avec une table de notre BDD on doit importer la classe de cette table dans le shell en faisant un: 
-`from nom_application.models import NomClasse`
+- Pour interagir avec une table de notre BDD on doit importer la classe de cette table dans le shell en faisant un:
+  `from nom_application.models import NomClasse`
 - **Création d'un nouvel objet(enregistrement)**  
-une fois importé la classe importée on crée un enregistrement en créant evidement un objet et en completants les valeurs 
-des attributs  
+  une fois importé la classe importée on crée un enregistrement en créant evidement un objet et en completants les
+  valeurs des attributs
+
 ```
 new = NomClasse.objects.create(attrib1= valeur1, attrib2= valeur2, attrib3= valeur3)
 new.save()
 ```
-On peut visualiser à quoi correspond l'objet new dans le terminal en tapant juste `new` puis la touche **Enter** cela 
+
+On peut visualiser à quoi correspond l'objet new dans le terminal en tapant juste `new` puis la touche **Enter** cela
 nous affichera le nom de l'objet, celui defini par la surcharge de la methode `__str__`.  
-On peut aussi visualiser le contenu des différents attributs d'un objet en faisant par exemple `new.attrib1`, cela 
-affichera le contenu de *attrib1* pour cet objet. 
+On peut aussi visualiser le contenu des différents attributs d'un objet en faisant par exemple `new.attrib1`, cela
+affichera le contenu de *attrib1* pour cet objet.
+
+## 7.Traitement des problemes liés à l'ajout des attributs lorsqu'il exite déjà des élements dans la BDD avec lesanciens attributs
+L'erreur est du type:
+```
+It is impossible to add a non-nullable field 'nom_attribut' to nom_table without specifying a default. This is because 
+the database needs something to populate existing rows.
+Please select a fix:
+ 1) Provide a one-off default now (will be set on all existing rows with a null value for this column)
+ 2) Quit and manually define a default value in models.py.
+Select an option: 2
+```
+On peut avoir 3 facons de gerer ce probleme mais deux sont les plus conseillées et une est utilisé en cas de force
+majeur.
+1. **Methode d'effacement des dossiers `migrations` et `__pycache__` et du fichiers contenant la BDD**
+ Cette methode est utilisée seulement si on a plus besoin des éléments se trouvant déjà dans la BDD, puisque ceci
+ revient
+ à réunitialiser la BDD pour créer des nouveaux élements ayant les meme attributs au départ.  
+ Apres avoir supprimer ces élements, il faut retaper les commandes `python manage.py makemigrations`
+ et `python manage.py migrate` et une fois apres avoir relancer le serveur, il faudra recréer un superuser puisque
+ l'ancien est parti avec l'ancienne BDD effacée, en executant la commande `python manage.py createsuperuser`.
+2. **Methode du passage d'une valeur par defaut de l'attribut**
+Cette methode consiste à donner une valeur par defaut à au champ, de cette facon meme les enregistrement n'ayant pas cet 
+attribut au départ l'auront avec la valeur par defaut selon le type du champ, les champs de type booleen prendront soit 
+*True* soit *False* et les string prendront une *chaine de caracteres*, les numeriques prendront un *nombre*, et on 
+aura evité d'avoir de probleme.
+Exemple: `actif = models.BooleanField(default=True)`
+3. **Methode d'acceptation d'avoir une valeur Null ou vide comme valeur d'un champ pour un enregistrement**
+Cette methode consiste à definir dans les arguments du type du champs `null=True` ou `blanck=True` qui sont par defaut à 
+False, la différence entre ces deux c'est que l'attribut le premier permet de définir qu'on peut enregistrer un element
+dans la base de donnée sans donner la valeur à ce champs et le second permet de définir qu'on peut valider un formulaire
+avec le champ de saisie de cet attribut vide et du coup dans la base de données ce champs devient optionnel. Et la 
+valeur pour ces genres de champs c'est NULL  
