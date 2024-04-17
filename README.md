@@ -236,7 +236,7 @@ nous affichera le nom de l'objet, celui defini par la surcharge de la methode `_
 On peut aussi visualiser le contenu des différents attributs d'un objet en faisant par exemple `new.attrib1`, cela
 affichera le contenu de *attrib1* pour cet objet.
 
-## 7.Traitement des problemes liés à l'ajout des attributs lorsqu'il exite déjà des élements dans la BDD avec lesanciens attributs
+## 7.Traitement des problemes liés à l'ajout des attributs lorsqu'il exite déjà des élements dans la BDD avec les anciens attributs
 L'erreur est du type:
 ```
 It is impossible to add a non-nullable field 'nom_attribut' to nom_table without specifying a default. This is because 
@@ -266,4 +266,6 @@ Cette methode consiste à definir dans les arguments du type du champs `null=Tru
 False, la différence entre ces deux c'est que l'attribut le premier permet de définir qu'on peut enregistrer un element
 dans la base de donnée sans donner la valeur à ce champs et le second permet de définir qu'on peut valider un formulaire
 avec le champ de saisie de cet attribut vide et du coup dans la base de données ce champs devient optionnel. Et la 
-valeur pour ces genres de champs c'est NULL  
+valeur pour ces genres de champs c'est NULL.  
+
+## 8. Fonctionnement des requetes et des urls

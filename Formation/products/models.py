@@ -10,7 +10,7 @@ class Products(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     # Le type image en django nécessite l'installation de la librairie pillow pour traiter les images
     image = models.ImageField(upload_to="images", blank=True)
-    image2 = models.ImageField(upload_to="images2", null=True )
+    slug = models.SlugField(null=True)
     actif = models.BooleanField(default=True)
 
     # La classe Meta est une sous-classe pour modifier les meta data de la classe, genre ses proprietés.
