@@ -7,3 +7,11 @@ from django.http import HttpResponse
 # navigateur
 def home_view(request):
     return HttpResponse("<h1>Hello World</h1>")
+
+
+def contact_view(request):
+    return HttpResponse("<h1>Contact me</h1>")
+
+
+def blog_view(request):
+    return HttpResponse("<h1>Blog page</h1>")

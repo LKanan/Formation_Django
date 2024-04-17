@@ -22,5 +22,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     # Le "" vide signifie que c'est le lien à la racine juste après http://127.0.0.1:8000/ on dirait que c'est le
     # dernier /
-    path("", views.home_view, name="home")
+    path("", views.home_view, name="home"),
+    path("contact/", views.contact_view, name="contact"),
+    path("blog/", views.blog_view, name="blog"),
 ]

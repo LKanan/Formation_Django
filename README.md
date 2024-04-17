@@ -237,7 +237,9 @@ On peut aussi visualiser le contenu des différents attributs d'un objet en fais
 affichera le contenu de *attrib1* pour cet objet.
 
 ## 7.Traitement des problemes liés à l'ajout des attributs lorsqu'il exite déjà des élements dans la BDD avec les anciens attributs
+
 L'erreur est du type:
+
 ```
 It is impossible to add a non-nullable field 'nom_attribut' to nom_table without specifying a default. This is because 
 the database needs something to populate existing rows.
@@ -246,26 +248,57 @@ Please select a fix:
  2) Quit and manually define a default value in models.py.
 Select an option: 2
 ```
+
 On peut avoir 3 facons de gerer ce probleme mais deux sont les plus conseillées et une est utilisé en cas de force
 majeur.
+
 1. **Methode d'effacement des dossiers `migrations` et `__pycache__` et du fichiers contenant la BDD**
- Cette methode est utilisée seulement si on a plus besoin des éléments se trouvant déjà dans la BDD, puisque ceci
- revient
- à réunitialiser la BDD pour créer des nouveaux élements ayant les meme attributs au départ.  
- Apres avoir supprimer ces élements, il faut retaper les commandes `python manage.py makemigrations`
- et `python manage.py migrate` et une fois apres avoir relancer le serveur, il faudra recréer un superuser puisque
- l'ancien est parti avec l'ancienne BDD effacée, en executant la commande `python manage.py createsuperuser`.
+   Cette methode est utilisée seulement si on a plus besoin des éléments se trouvant déjà dans la BDD, puisque ceci
+   revient
+   à réunitialiser la BDD pour créer des nouveaux élements ayant les meme attributs au départ.  
+   Apres avoir supprimer ces élements, il faut retaper les commandes `python manage.py makemigrations`
+   et `python manage.py migrate` et une fois apres avoir relancer le serveur, il faudra recréer un superuser puisque
+   l'ancien est parti avec l'ancienne BDD effacée, en executant la commande `python manage.py createsuperuser`.
 2. **Methode du passage d'une valeur par defaut de l'attribut**
-Cette methode consiste à donner une valeur par defaut à au champ, de cette facon meme les enregistrement n'ayant pas cet 
-attribut au départ l'auront avec la valeur par defaut selon le type du champ, les champs de type booleen prendront soit 
-*True* soit *False* et les string prendront une *chaine de caracteres*, les numeriques prendront un *nombre*, et on 
-aura evité d'avoir de probleme.
-Exemple: `actif = models.BooleanField(default=True)`
+   Cette methode consiste à donner une valeur par defaut à au champ, de cette facon meme les enregistrement n'ayant pas
+   cet
+   attribut au départ l'auront avec la valeur par defaut selon le type du champ, les champs de type booleen prendront
+   soit
+   *True* soit *False* et les string prendront une *chaine de caracteres*, les numeriques prendront un *nombre*, et on
+   aura evité d'avoir de probleme.
+   Exemple: `actif = models.BooleanField(default=True)`
 3. **Methode d'acceptation d'avoir une valeur Null ou vide comme valeur d'un champ pour un enregistrement**
-Cette methode consiste à definir dans les arguments du type du champs `null=True` ou `blanck=True` qui sont par defaut à 
-False, la différence entre ces deux c'est que l'attribut le premier permet de définir qu'on peut enregistrer un element
-dans la base de donnée sans donner la valeur à ce champs et le second permet de définir qu'on peut valider un formulaire
-avec le champ de saisie de cet attribut vide et du coup dans la base de données ce champs devient optionnel. Et la 
-valeur pour ces genres de champs c'est NULL.  
+   Cette methode consiste à definir dans les arguments du type du champs `null=True` ou `blanck=True` qui sont par
+   defaut à
+   False, la différence entre ces deux c'est que l'attribut le premier permet de définir qu'on peut enregistrer un
+   element
+   dans la base de donnée sans donner la valeur à ce champs et le second permet de définir qu'on peut valider un
+   formulaire
+   avec le champ de saisie de cet attribut vide et du coup dans la base de données ce champs devient optionnel. Et la
+   valeur pour ces genres de champs c'est NULL.
 
 ## 8. Fonctionnement des requetes et des urls
+
+Dans une vue comme etant une fonction, elle doit oligatoirement prendre en parametre un objet de type **request** qui
+represente la requete faite par l'utilisateur et contient enormement d'imformation comme la methode de requete lancée et
+meme l'url vers laquelle la requete pointe, par exemple si on essaye d'afficher le contenu de request lors de la requete
+vers la homepage on a quelque chose qui ressemble à ca: `<WSGIRequest: GET '/'>`; **WSGIRequest** c'est pour le serveur
+en local, **GET** est
+la methode de requete et elle pointe vers l'url à la racine **/**.  
+Et en faisant `request.user` on peut voir l'utilisateur qui a fait la requete, si c'est un utilisateur anonyme on aura
+un attribut `AnonymousUser` qui est un objet de django qui represente un utilisateur anonyme. et en
+faisant `request.path` on peut voir l'url vers laquelle la requete pointe, et en faisant `request.method` on peut voir
+la methode de requete utilisée. Et plein d'autre de ses attributs qu'on peut voir en faisant un print(dir(request)).
+
+Concernant les urls, on les definit soit dans le fichier **urls.py de l'application** soit dans le fichier **urls.py du
+projet** et concernant leurs définitions dans le fichier **url.py du projet** c'est comme sur l'image qui suit :
+![image de definition des urls](img.png)
+Comme sur cette image on a besoin d'importer **path**, la methode **path** est celle qui va nous permettre de créer des
+urls, elle prend en premier paramettre le lien que nous voulons créer finissant toujours par un **/**, en deuxième
+parametre il prend le chemin qui indique la vue se trouvant dans un fichier view.py d'une application et en troisième
+paramettre il premd le nom qu'on veut donner à notre url dans le projet, celui-ci est optionnel bien qu'important et les
+fichiers qui contiennent les vues dans les différentes applications comme par exemple: `from products import views`, on
+a importé le fichier view de notre application **produits**, et pour créer un lien il faut savoir que tous les liens que
+nous allons créer seront ecrits apres le `http://127.0.0.1:8000/`, par exemple pour definir le chemin vers une vue 
+**contact_view** qu'on a créé dans le fichier view.py de notre application products, on fera
+maintenant: `path("contact/", views.contact_view, name="contact")`.
