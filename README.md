@@ -349,3 +349,15 @@ mettrons nos templates afin d'eviter les conflits entre les fichiers de meme nom
 celà fait que si on doit mettre le chemin vers un template dans une vue il suffira de donner seulement le nom le chemin
 commencant par le nom_de_application/nom_ficher, par exemple si on a un fichier dans une application my_app on
 a:  `return render(request, "my_app/home.html")`.
+
+## 10. Utilisation des variables dans le template en django
+
+Ceci fait appel au template engine de django qui est un moteur de rendu de template qui permet de generer des pages web
+à partir de templates HTML et de données dynamiques.
+Pour afficher des valeurs de variables dans un template on doit d'abord passer ces variables dans un dictionnaire dans
+la vue qui renvoi le template, par exemple si on a une variable **name** qu'on veut afficher dans un template on doit la
+passer dans un dictionnaire dans la vue qui renvoi le template, par
+exemple: `return render(request, "home.html", {"name": "John"})`, et pour afficher cette variable dans le template on
+utilise la syntaxe `{{ name }}` dans le fichier html dans un élement ce qui permet d'afficher la valeur de la variable 
+**name** dans le template, et on peut aussi faire des operations sur les variables dans le template, par exemple si on a
+une variable **price** et qu'on veut afficher le prix avec une tva de 20% on peut faire: `{{ price*1.2 }}`.
