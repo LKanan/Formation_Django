@@ -6,7 +6,7 @@ from django.http import HttpResponse
 # request est un argument obligatoire pour toute vue, pour que ils soient appellable lors des requettes dans le
 # navigateur
 def home_view(request):
-    return HttpResponse("<h1>Hello World</h1>")
+    return render(request, "index.html")
 
 
 def contact_view(request):

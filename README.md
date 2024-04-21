@@ -25,6 +25,9 @@ from pathlib import Path
 dir(Path)
 ```
 
+- La commande **`pwd`** dans le terminal permet de recuperer le chemin complet vers le dossier actuel. Elle signifie
+  Present Working Directory.
+
 ## 2. Création d'un projet et une application django
 
 - Pour créer un projet django on utilise la commande `django-admin startproject nom_du_projet`, ceci créera
@@ -299,6 +302,50 @@ parametre il prend le chemin qui indique la vue se trouvant dans un fichier view
 paramettre il premd le nom qu'on veut donner à notre url dans le projet, celui-ci est optionnel bien qu'important et les
 fichiers qui contiennent les vues dans les différentes applications comme par exemple: `from products import views`, on
 a importé le fichier view de notre application **produits**, et pour créer un lien il faut savoir que tous les liens que
-nous allons créer seront ecrits apres le `http://127.0.0.1:8000/`, par exemple pour definir le chemin vers une vue 
+nous allons créer seront ecrits apres le `http://127.0.0.1:8000/`, par exemple pour definir le chemin vers une vue
 **contact_view** qu'on a créé dans le fichier view.py de notre application products, on fera
 maintenant: `path("contact/", views.contact_view, name="contact")`.
+
+## 9. Configuration des templates
+
+On a apris que pour générer ou renvoyer un texte sur une page avec une vue on peut faire un code du genre :
+![image du renvoi d'un texte sur une page web par une vue](img_1.png), on a besoin d'imprter **HttpResponse** pour que
+la vue puisse renvoyer un texte sur une page web.  
+Et apres pour qu'une vue renvoi un un texte on doit l'associer à un url dans le fichier urls.py de l'application, et
+elle doit retourner un HttpResponse() avec le texte à renvoyer par exemple pour renvoyer un texte sur la page d'accueil
+on peut faire:
+
+```
+def home_view(request):
+    return HttpResponse("<h1>Hello World</h1>")
+```
+
+ici on met la syntaxe du html pour que le navigateur puisse le mettre en forme vu que c'est du HTML ou on peut aussi
+faire simplement:
+
+```
+def home_view(request):
+    return HttpResponse("Hello World")
+```
+
+Mais ca ne sera pas bien reconnu par le navigateur pour la mise en forme.
+
+Alors pour retourner un template ou un texte html bien structuré dans un fichier html on ne va plus utiliser la methode
+HttpResponse() mais la methode **render()** qui prend en parametre la requete(request), le nom du fichier html et un
+dictionnaire(context) contenant les données à passer au template, par exemples des donnée venant de la base de données.
+
+Lorsque nous avons nos templates HTML à afficher dans le dossier du projet django on les places dans un dossier appelé *
+*templates** à la
+racine de notre application, et pour que django puisse les reconnaitre il faut ajouter ce dossier dans la liste des
+dossiers de templates dans le fichier **settings.py** du projet, on doit ajouter le chemin vers le dossier templates
+dans la variable **TEMPLATES** dans la liste **DIRS**, ce qui permet lorsque on doit mettre le chemin vers un template
+de donner seulement le nom du fichier sans le chemin complet, par exemple si on a un fichier **home.html** dans le
+dossier **templates** de notre application, on peut le renvoyer dans une vue en
+faisant: `return render(request, "home.html")`. Et si on veut placer nos templates dans un dossier templates à
+l'interieur de nos applications vu que le chemin vers le dossier templates est reconnu par defaut par django par la
+ligne `'APP_DIRS': True,` dans la definition des dossiers de templates dans les **settings.py** alors on doit ajouter un
+dossier ayant le nom de notre application dans ce dossier templates et c'est dans celui-ci que nous
+mettrons nos templates afin d'eviter les conflits entre les fichiers de meme nom dans differentes applications. Une fois
+celà fait que si on doit mettre le chemin vers un template dans une vue il suffira de donner seulement le nom le chemin
+commencant par le nom_de_application/nom_ficher, par exemple si on a un fichier dans une application my_app on
+a:  `return render(request, "my_app/home.html")`.
