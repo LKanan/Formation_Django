@@ -20,7 +20,12 @@
 <ul>
     {% for item in my_list %}
         {#forloop.counter est un filtre qui permet de compter le nombre d'elements dans la liste et de les afficher en ordre en donnant le numero de l'element ou sa position#}
-        <li>{{ forloop.counter }}). {{ item }}</li>
+        <li>{{ forloop.counter }}) {{ item }}</li>
+        {% if item == 3 %}
+            <h5>Le nombre est egal à 3</h5>
+        {% elif item == 7 %}
+            <h5>Le nombre est egal à 7 </h5>
+        {% endif %}
     {% empty %}
         <h3>Pas d'elements pour l'instant</h3>
     {% endfor %}

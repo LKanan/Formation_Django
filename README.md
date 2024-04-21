@@ -375,5 +375,21 @@ affichera le message **No names**.
 Et si on voulait afficher les index des elements de la liste on peut utiliser la methode **forloop** qui est une methode
 de la boucle for, par exemple si on a une liste de noms et qu'on veut afficher l'index de chaque nom on peut
 faire: `{% for name in names %}{{ forloop.counter }}. {{ name }}{% endfor %}`, ici on affiche l'index de chaque nom en
-commencant par 1 et la sortie sera du genre: **1. John**. forloop a d'autres methodes comme qui sont: 
-**forloop.counter0**, **forloop.revcounter**, **forloop.revcounter0**. 
+commencant par 1 et la sortie sera du genre: **1. John**. forloop a d'autres methodes comme qui sont:
+**forloop.counter0**, **forloop.revcounter**, **forloop.revcounter0**.
+
+# 12. Utilisation des conditions dans les templates en django
+
+Pour utiliser des conditions dans un template on utilise la syntaxe `{% if condition %} instructions {%end if%}` qui
+permet de definir une condition et d'executer des instructions si cette condition est vraie, par exemple si on a une
+variable **age** et qu'on veut afficher un message si l'age est superieur à 18 on peut
+faire: `{% if age > 18 %}Vous etes majeur{% endif %}`, et on peut aussi utiliser la syntaxe `{% else %}` pour definir
+des instructions à executer si la condition n'est pas vraie, par exemple si on veut afficher un message si l'age est
+inferieur à 18 on peut faire: 
+```
+    {% if age > 18 %}
+        <p>Vous etes majeur</p>
+    {% else %}
+        <p>Vous etes mineur</p>
+    {% endif %}
+```
