@@ -358,6 +358,22 @@ Pour afficher des valeurs de variables dans un template on doit d'abord passer c
 la vue qui renvoi le template, par exemple si on a une variable **name** qu'on veut afficher dans un template on doit la
 passer dans un dictionnaire dans la vue qui renvoi le template, par
 exemple: `return render(request, "home.html", {"name": "John"})`, et pour afficher cette variable dans le template on
-utilise la syntaxe `{{ name }}` dans le fichier html dans un élement ce qui permet d'afficher la valeur de la variable 
+utilise la syntaxe `{{ name }}` dans le fichier html dans un élement ce qui permet d'afficher la valeur de la variable
 **name** dans le template, et on peut aussi faire des operations sur les variables dans le template, par exemple si on a
 une variable **price** et qu'on veut afficher le prix avec une tva de 20% on peut faire: `{{ price*1.2 }}`.
+
+## 11. Utilisation des boucles dans les templates en django
+
+Pour afficher une liste de valeurs dans un template on peut utiliser une boucle for, par exemple si on a une liste de
+noms qu'on veut afficher dans un template on peut faire: {% for name in names %}{{ name }}{% endfor %}, ici on a une
+liste de noms **names** et on veut afficher chaque nom dans le template, et pour que cette liste soit reconnue par le
+template on doit la passer dans un dictionnaire dans la vue qui renvoi le template, par
+exemple: `return render(request, "home.html", {"names": ["John", "Doe", "Jane"]})`, on peut aussi utiliser la syntaxe {%
+empty %} pour afficher un message au cas ou la liste est vide, par
+exemple: `{% for name in names %}{{ name }}{% empty %}No names{% endfor %}`, ici si la liste **names** est vide on
+affichera le message **No names**.
+Et si on voulait afficher les index des elements de la liste on peut utiliser la methode **forloop** qui est une methode
+de la boucle for, par exemple si on a une liste de noms et qu'on veut afficher l'index de chaque nom on peut
+faire: `{% for name in names %}{{ forloop.counter }}. {{ name }}{% endfor %}`, ici on affiche l'index de chaque nom en
+commencant par 1 et la sortie sera du genre: **1. John**. forloop a d'autres methodes comme qui sont: 
+**forloop.counter0**, **forloop.revcounter**, **forloop.revcounter0**. 
