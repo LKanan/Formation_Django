@@ -380,16 +380,53 @@ commencant par 1 et la sortie sera du genre: **1. John**. forloop a d'autres met
 
 # 12. Utilisation des conditions dans les templates en django
 
-Pour utiliser des conditions dans un template on utilise la syntaxe `{% if condition %} instructions {%end if%}` qui
-permet de definir une condition et d'executer des instructions si cette condition est vraie, par exemple si on a une
-variable **age** et qu'on veut afficher un message si l'age est superieur à 18 on peut
-faire: `{% if age > 18 %}Vous etes majeur{% endif %}`, et on peut aussi utiliser la syntaxe `{% else %}` pour definir
-des instructions à executer si la condition n'est pas vraie, par exemple si on veut afficher un message si l'age est
-inferieur à 18 on peut faire: 
+- **extends**  
+  Pour utiliser des conditions dans un template on utilise la syntaxe `{% if condition %} instructions {%end if%}` qui
+  permet de definir une condition et d'executer des instructions si cette condition est vraie, par exemple si on a une
+  variable **age** et qu'on veut afficher un message si l'age est superieur à 18 on peut
+  faire: `{% if age > 18 %}Vous etes majeur{% endif %}`, et on peut aussi utiliser la syntaxe `{% else %}` pour definir
+  des instructions à executer si la condition n'est pas vraie, par exemple si on veut afficher un message si l'age est
+  inferieur à 18 on peut faire:
+
 ```
-    {% if age > 18 %}
-        <p>Vous etes majeur</p>
-    {% else %}
-        <p>Vous etes mineur</p>
-    {% endif %}
+{% if age > 18 %}
+    <p>Vous etes majeur</p>
+{% else %}
+    <p>Vous etes mineur</p>
+{% endif %} 
 ```
+
+# 13. Comment utiliser include et extends dans les templates en django
+
+- **extends**  
+  `extends` permet d'etendre un template de base dans un autre template, c'est à dire qu'on peut creer un template de
+  base
+  qui contient le code commun à toutes les pages de notre site et ensuite on peut creer des templates qui etendent ce
+  template de base et qui contiennent le code specifique à chaque page. par exemple si on a un template de base *
+  *base.html** qui contient le code commun à toutes les pages de notre site et qu'on veut creer un template **home.html
+  **
+  qui etend ce template de base et qui contient le code specifique à la page d'accueil on peut faire:
+
+```
+{% extends "base.html" %}
+{% block content %}
+    <h1>Home</h1>
+    <p>Welcome to our site</p>
+{% endblock %}
+```
+
+ici on a utilise la syntaxe `{% extends "base.html" %}` pour etendre le template de base **base.html** et la
+syntaxe `{% block content %}` pour definir un bloc de contenu qui sera remplace par le contenu specifique à la page
+d'accueil et la syntaxe `{% endblock %}` pour fermer le bloc de contenu. Quand on etend un template de base dans un
+autre template on peut definir plusieurs blocs de contenu qui seront remplaces par le contenu specifique à chaque page
+et le code existant dans le template de base sera affiche dans le template qui etend le template de base directement
+apres le mot cle **{% extends 'base.html' %}**.
+
+- **include**  
+  `include` permet de faire presque la meme chose que *extends* sauf que le *extends* est utilisé pour recuperer toute
+  la structure et le contenu d'un template mais le *include* comme le mot l'indique, il permet d'inclure un morceau de
+  texte ou de html spécifique pour une certaime partie dans le template, par exemple on peut faire un extend d'un
+  fichier html de base dans plus de 3 fichier html mais on voudrait que chaque page aiet sa proprestructure de barre de
+  navigation, alors on va créer des fichiers contenants rien que le texte html de la structure spécifique de la nav
+  barre, alors si on veut maintenant inclure cette structure dans un fichier on va taper une syntaxe du
+  genre: ```{% include nom_fichier.html %}```.

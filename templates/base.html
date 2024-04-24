@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mon projet</title>
+</head>
+<body style="background-color: aliceblue">
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="projets.html">Projet</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+    
+    <h2>{% block content %}{% endblock %}</h2>
+    <h1>{% block hello %}{% endblock %}</h1>
+    <ul>
+        {% block list_nombre %}{% endblock %}
+    </ul>
+    
+</body>
+</html>

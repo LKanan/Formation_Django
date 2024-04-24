@@ -1,34 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Mon projet</title>
-</head>
-<body style="background-color: aliceblue">
-<p>Hello world, c'est mon projet</p>
-<h4>{{ name }}</h4>
-<h4>{{ number }}</h4>
-<h4>{{ my_list }}</h4>
-<ul>
-    {% for item in my_list %}
-        <li>{{ item }}</li>
-        {#            {% empty permet d'afficher quelque chose au cas ou la liste serait vide %}#}
-    {% empty %}
-        <h3>Pas d'elements pour l'instant</h3>
+{% extends "base.html" %}
+
+{% block content %}
+    Home page
+{% endblock %}
+
+{% block hello %}
+    Hello world
+{% endblock %}
+
+{% block list_nombre %}
+    {% for element in  my_list %}
+        <li>{{ element }}</li>
     {% endfor %}
-</ul>
-<ul>
-    {% for item in my_list %}
-        {#forloop.counter est un filtre qui permet de compter le nombre d'elements dans la liste et de les afficher en ordre en donnant le numero de l'element ou sa position#}
-        <li>{{ forloop.counter }}) {{ item }}</li>
-        {% if item == 3 %}
-            <h5>Le nombre est egal à 3</h5>
-        {% elif item == 7 %}
-            <h5>Le nombre est egal à 7 </h5>
-        {% endif %}
-    {% empty %}
-        <h3>Pas d'elements pour l'instant</h3>
-    {% endfor %}
-</ul>
-</body>
-</html>
+{% endblock %}
+``` 
